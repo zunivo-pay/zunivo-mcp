@@ -1,0 +1,29 @@
+{
+  "name": "zunivo-mcp",
+  "version": "0.1.3",
+  "description": "MCP server that gives AI agents a USDC wallet on Arc \u2014 discover .agent services, pay per call over x402, create payment links. Non-custodial, spend-capped.",
+  "type": "module",
+  "bin": {
+    "zunivo-mcp": "src/cli.mjs"
+  },
+  "main": "src/server.mjs",
+  "scripts": {
+    "start": "node src/cli.mjs",
+    "test": "node test/server.test.mjs"
+  },
+  "keywords": [
+    "mcp",
+    "x402",
+    "arc",
+    "usdc",
+    "ai-agents",
+    "payments",
+    "zunivo"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "zod": "^3.23.8",
+    "zunivo-x402-arc": "^0.3.0"
+  }
+}
