@@ -2,7 +2,7 @@
 
 Give your AI agent working money on Arc.
 
-An MCP server that lets any MCP client (Claude Desktop, Claude Code, etc.)
+An MCP server that lets any MCP client (Claude, ChatGPT, Cursor, Gemini — anything that speaks MCP)
 discover `.agent` services, pay for APIs over x402 in USDC, and issue payment
 links — non-custodial, with a hard daily budget.
 
