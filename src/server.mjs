@@ -21,7 +21,11 @@ const TRUNCATE_BODY = 20_000;
 
 export function buildServer(overrides = {}) {
   const env = { ...process.env, ...(overrides.env ?? {}) };
-  const api = (env.ZUNIVO_API ?? "https://api.zunivo.io").replace(/\/$/, "");
+  // Network: "arc" (Arc MAINNET, default since 0.2.0) or "arc-testnet". Picks the SDK
+  // chain/router/registry AND the matching Zunivo API host.
+  const network = env.ZUNIVO_NETWORK ?? "arc";
+  if (network !== "arc" && network !== "arc-testnet") throw new Error(`ZUNIVO_NETWORK must be "arc" or "arc-testnet" (got "${network}")`);
+  const api = (env.ZUNIVO_API ?? (network === "arc" ? "https://api.zunivo.io" : "https://testnet-api.zunivo.io")).replace(/\/$/, "");
   const fetchImpl = overrides.fetchImpl ?? fetch;
   const spend = overrides.spend ?? createSpendTracker({
     dailyCap: env.ZUNIVO_DAILY_CAP ?? "5",
@@ -48,6 +52,7 @@ export function buildServer(overrides = {}) {
       try {
         const { discoverAgent } = await getSdk();
         const card = await discoverAgent(name, {
+          network,
           recordsAddress: env.ZUNIVO_RECORDS_ADDRESS,
           namesAddress: env.ZUNIVO_NAMES_ADDRESS,
           rpcUrl: env.ZUNIVO_RPC_URL,
@@ -92,6 +97,7 @@ export function buildServer(overrides = {}) {
         if (!target) {
           if (!agent) return fail("provide either url or agent");
           const card = await discoverAgent(agent, {
+            network,
             recordsAddress: env.ZUNIVO_RECORDS_ADDRESS,
             namesAddress: env.ZUNIVO_NAMES_ADDRESS,
             rpcUrl: env.ZUNIVO_RPC_URL,
@@ -104,6 +110,7 @@ export function buildServer(overrides = {}) {
         const events = [];
         const paidFetch = createX402Fetch({
           privateKey: env.AGENT_PK,
+          network,
           maxPrice: allowance,
           expectRecipient,
           onEvent: (e) => {
@@ -170,7 +177,7 @@ export function buildServer(overrides = {}) {
     "zunivo_spend_status",
     "Show today's spending budget for the agent wallet: daily cap, spent so far, remaining, per-call ceiling.",
     {},
-    async () => text(spend.status())
+    async () => text({ network, api, ...spend.status() })
   );
 
   return server;

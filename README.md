@@ -40,7 +40,7 @@ links — non-custodial, with a hard daily budget.
       "args": ["-y", "zunivo-mcp"],
       "env": {
         "AGENT_PK": "0x<agent wallet private key>",
-        "ZUNIVO_RECORDS_ADDRESS": "0x<ZunivoAgentRecords on Arc>",
+        "ZUNIVO_NETWORK": "arc",
         "ZUNIVO_DAILY_CAP": "5",
         "ZUNIVO_MAX_PER_CALL": "1"
       }
@@ -49,7 +49,12 @@ links — non-custodial, with a hard daily budget.
 }
 ```
 
-Fund the wallet with test USDC at https://faucet.circle.com (Arc Testnet).
+`ZUNIVO_NETWORK` is `arc` (**Arc mainnet, real USDC** — the default since 0.2.0) or
+`arc-testnet` (free sandbox). The SDK already knows the registry contracts for
+both, so `ZUNIVO_RECORDS_ADDRESS` / `ZUNIVO_NAMES_ADDRESS` are only overrides.
+Fund the wallet with USDC on Arc mainnet (bridge via CCTP), or with test USDC at
+https://faucet.circle.com when on `arc-testnet`. `zunivo_spend_status` reports
+which network and API the server is on.
 
 ## Example session
 
