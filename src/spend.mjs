@@ -1,21 +1,13 @@
 /**
- * spend.mjs — a daily USDC budget for the agent's wallet.
+ * Daily USDC budget for the agent wallet: a daily cap and a per-call ceiling,
+ * both from env. Spend is counted when the tx is submitted, so a call that
+ * crashes afterwards still counts.
  *
- * The MCP server never exposes the private key to the model; what it exposes
- * is the ABILITY to pay, and this tracker is the leash: a hard daily cap plus
- * a per-call ceiling, both set by the human via env. Counting happens at
- * "paying" time (tx submitted), so a crashed call still consumes budget —
- * conservative by design.
- *
- * Persistence & source of truth:
- *   With ZUNIVO_SPEND_FILE set, the FILE is the single source of truth. Every
- *   allowance()/record()/status() re-reads it, and record() does an atomic
- *   read-modify-write. This means the budget is shared across process restarts
- *   AND across concurrent MCP instances — a restart can no longer "refill" the
- *   day's cap. Strongly recommended before pointing this at real funds.
- *
- *   Without a file, the counter is per-process (fine on testnet): a restart
- *   resets it, so do NOT run unfunded-cap-only with real money.
+ * With ZUNIVO_SPEND_FILE set the file is the source of truth. Every call
+ * re-reads it and record() does an atomic read-modify-write, so the budget
+ * survives restarts and is shared between instances. Without a file the
+ * counter is per process and a restart resets it. Set the file before using
+ * real money.
  */
 import fs from "node:fs";
 import path from "node:path";

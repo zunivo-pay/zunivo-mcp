@@ -3,10 +3,10 @@
  * zunivo-mcp over stdio.
  *
  * Configure via env (all payments bounded by the spend tracker):
- *   AGENT_PK                 the agent wallet's private key (never exposed to the model)
+ *   AGENT_PK                 the agent wallet's private key (not returned by any tool)
  *   ZUNIVO_DAILY_CAP         hard daily USDC budget            (default "5")
  *   ZUNIVO_MAX_PER_CALL      per-call USDC ceiling             (default "1")
- *   ZUNIVO_NETWORK           "arc" (MAINNET, real USDC — default) or "arc-testnet"
+ *   ZUNIVO_NETWORK           "arc" (mainnet, real USDC, default) or "arc-testnet"
  *   ZUNIVO_API               Zunivo API   (default follows ZUNIVO_NETWORK: api.zunivo.io / testnet-api.zunivo.io)
  *   ZUNIVO_KEY               API key for creating payment links (optional)
  *   ZUNIVO_RECORDS_ADDRESS   ZunivoAgentRecords contract on Arc

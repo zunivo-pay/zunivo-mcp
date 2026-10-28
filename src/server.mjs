@@ -1,5 +1,5 @@
 /**
- * zunivo-mcp — MCP server that gives an AI agent working money on Arc.
+ * zunivo-mcp: MCP server with a USDC wallet on Arc for the agent.
  *
  * Tools:
  *   zunivo_resolve_agent      name → on-chain agent card (address, endpoint, records)
@@ -9,9 +9,9 @@
  *   zunivo_check_order        order status (unpaid/paid) + payments
  *   zunivo_spend_status       today's budget: cap, spent, remaining
  *
- * Safety model: the private key stays in env, never in tool output; every
- * payment is bounded by a per-call ceiling and a hard daily cap; paid_fetch
- * pins the recipient to the address the .agent name resolves to on-chain.
+ * The private key stays in env and is not returned by any tool. Payments are
+ * capped per call and per day. paid_fetch pins the recipient to the address the
+ * .agent name resolves to.
  */
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
